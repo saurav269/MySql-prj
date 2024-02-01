@@ -38,10 +38,11 @@ app.get("/books", (req,res) => {
 
 //create books
 app.post('/books/add', (req,res)=>{
-    const q = "INSERT INTO books (`title`,`desc`,`cover`) VALUES(?)"
+    const q = "INSERT INTO books (`title`,`desc`,`price`,`cover`) VALUES(?)"
     const values = [
         req.body.title,
         req.body.desc,
+        req.body.price,
         req.body.cover
     ];
     try{
@@ -57,6 +58,47 @@ app.post('/books/add', (req,res)=>{
         console.log(err)
     }
 })
+
+//UPDATE ROUTE
+app.put("/books/:id", (req,res) => {
+    const bookId = req.params.id;
+    const q = "UPDATE books SET `title` = ? , `desc`= ?, `price`= ?, `cover`= ? WHERE id = ?";
+    const values = [
+        req.body.title,
+        req.body.desc,
+        req.body.price,
+        req.body.cover
+    ];
+    try{
+        db.query(q, [...values, bookId], (err,data) =>{
+            if(err){
+                return res.send(err)
+            }else{
+                return res.send("book has been updated successfully")
+            }
+        })
+    }catch(err){
+        console.log(err)
+    }
+})
+
+//DELETE ROUTE
+app.delete("/books/:id", (req,res) => {
+    const bookId = req.params.id;
+    const q = "DELETE FROM books WHERE id = ?"
+    try{
+        db.query(q, [bookId], (err,data) =>{
+            if(err){
+                return res.send(err)
+            }else{
+                return res.send("book has been removed successfully")
+            }
+        })
+    }catch(err){
+        console.log(err)
+    }
+})
+
 
 
 app.listen(8800, () => {
