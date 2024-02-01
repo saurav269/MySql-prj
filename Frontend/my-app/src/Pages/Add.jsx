@@ -9,6 +9,7 @@ const Add = () => {
       <input type='text' placeholder='desc' />
       <input type='number' placeholder='price' />
       <input type='text' placeholder='cover' />
+      <></>
     </div>
   )
 }
